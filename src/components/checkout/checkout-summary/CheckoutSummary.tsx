@@ -138,7 +138,7 @@ export default function CheckoutSummary({ onEditStep }: Props) {
               <p className="text-[#3F3F3F]">
                 {fourthStep === null ?
                   <span className="text-[#b45309] italic text-sm">Não preenchido</span> :
-                  `${fourthStep.paymentMethod === 'bankSlip' ? 'Boleto Bancário' : 'Débito Automático'} · Vencimento dia ${fourthStep.dueDay}`}
+                  `${fourthStep.paymentMethod === 'bankSlip' ? 'Boleto Bancário' : 'Débito Automático'}${fourthStep.dueDay ? ` · Vencimento dia ${fourthStep.dueDay}` : ''}`}
               </p>
             </div>
             <Button

@@ -30,7 +30,7 @@ export type CheckoutThirdStep = {
 }
 
 export type CheckoutFourthStep = {
-  dueDay: "1" | "10" | "17" | "21" | "26"
+  dueDay?: "1" | "10" | "17" | "21" | "26"
   paymentMethod: "bankSlip" | "debitAuto"
   bank?: BankValue
   agency?: string

@@ -33,25 +33,27 @@ function CheckoutContent({ isTransbordo }: { isTransbordo: boolean }) {
   }, [navigate, isTransbordo])
 
   return (
-    <DefaultLayout className="w-full lg:flex lg:gap-8">
-      <div className={`w-full mb-9 ${plan ? 'max-w-175 lg:w-2/3' : ''}`}>
-        <CheckoutProgress progress={step} />
+    <div className="relative min-h-[calc(100dvh-5rem)] bg-[#EAEAEA]">
+      <DefaultLayout className="w-full lg:flex lg:gap-8">
+        <div className={`w-full mb-9 ${plan ? 'max-w-175 lg:w-2/3' : ''}`}>
+          <CheckoutProgress progress={step} />
 
-        <CheckoutDefaultCard>
-          {step === 1 && <CheckoutFirstStep />}
-          {step === 2 && <CheckoutSecondStep onExtraIdsChange={setSelectedExtraIds} />}
-          {step === 3 && <CheckoutThirdStep />}
-          {step === 4 && <CheckoutFourthStep />}
-          {step === 5 && <CheckoutFifthStep />}
-        </CheckoutDefaultCard>
-      </div>
-
-      {plan && (
-        <div className="w-full lg:w-1/3">
-          <OrderSummary plan={plan} selectedExtraIds={selectedExtraIds} />
+          <CheckoutDefaultCard>
+            {step === 1 && <CheckoutFirstStep />}
+            {step === 2 && <CheckoutSecondStep onExtraIdsChange={setSelectedExtraIds} />}
+            {step === 3 && <CheckoutThirdStep />}
+            {step === 4 && <CheckoutFourthStep />}
+            {step === 5 && <CheckoutFifthStep />}
+          </CheckoutDefaultCard>
         </div>
-      )}
-    </DefaultLayout>
+
+        {plan && (
+          <div className="w-full lg:w-1/3">
+            <OrderSummary plan={plan} selectedExtraIds={selectedExtraIds} />
+          </div>
+        )}
+      </DefaultLayout>
+    </div>
   )
 }
 

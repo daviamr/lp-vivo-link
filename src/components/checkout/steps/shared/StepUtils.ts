@@ -1,7 +1,7 @@
 export const stepTitleAndDescription: Record<number, StepTitleAndDescription> = {
   1: {
-    title: "Dados pessoais",
-    description: "Informe seus dados pessoais",
+    title: "Mais alguns passos para você aproveitar os serviços da Vivo na sua Empresa.",
+    description: "Olá, vamos completar o seu pedido!",
   },
   2: {
     title: "Pacotes Opcionais",

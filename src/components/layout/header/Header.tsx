@@ -43,7 +43,11 @@ export default function Header() {
                 className="w-[91px] h-[48px]"
               />
             </a>
-            <p className="hidden md:block text-[19px] font-bold text-[#192B1C]">Para empresas</p>
+          </div>
+          <div className="w-full flex items-center justify-end gap-8 md:px-12">
+            <p className="hidden md:block text-[#505050]">Vantagens</p>
+            <p className="hidden md:block text-[#505050]">Comparativo</p>
+            <p className="hidden md:block text-[#505050]">Dúvidas frequentes</p>
           </div>
           {partnerId != null && (
             <img src="/logo-gold.png" alt="Vivo" className="hidden h-[39px] w-auto md:block" />

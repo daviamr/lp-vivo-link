@@ -9,7 +9,7 @@ export function CheckoutProgress({ progress }: CheckoutprogresssProps) {
   const liDefaultStyle = `relative flex justify-center items-center m-auto rounded-full w-9 h-9 shadow`
   const spanDefaultStyle = `absolute text-sm`
   return (
-    <div className="relative top-0 mt-9">
+    <div className="relative top-0 mt-9 z-10">
       <ul className="grid grid-cols-5 text-center text-[#3F3F3F] text-[20px] font-bold mb-16">
         <li
           className={`${liDefaultStyle} ${(progress >= 1 ? 'bg-[#1F1D1D] text-white font-bold' : 'bg-white')}`}>

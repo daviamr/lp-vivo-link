@@ -11,7 +11,7 @@ import { mapFirstStepUpdate } from "@/lib/order-mappers"
 import { verifyEmail, verifyPhone } from "@/lib/api/verification"
 import { parsePhoneNumber } from "@/lib/phone"
 import { trackCheckoutStep } from "@/lib/gtm"
-import { formatCpf } from "@/lib/cpf"
+// import { formatCpf } from "@/lib/cpf" // Comentado, reverter caso necessário
 import { toTitleCase } from "@/lib/text"
 import {
   firstStepSchema,
@@ -72,10 +72,10 @@ export default function CheckoutFirstStep() {
     setErrors((current) => ({ ...current, [field]: undefined }))
   }
 
-  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((current) => ({ ...current, cpf: formatCpf(e.target.value) }))
-    setErrors((current) => ({ ...current, cpf: undefined }))
-  }
+  // const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setForm((current) => ({ ...current, cpf: formatCpf(e.target.value) }))
+  //   setErrors((current) => ({ ...current, cpf: undefined }))
+  // } // Comentado, reverter caso necessário
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -89,7 +89,7 @@ export default function CheckoutFirstStep() {
     const pjErrors: Partial<Record<keyof FirstStepFormData, string>> = {}
     if (!result.data.cnpj) pjErrors.cnpj = "Informe o CNPJ"
     if (!result.data.razaosocial) pjErrors.razaosocial = "Informe a razão social"
-    if (!result.data.cpf) pjErrors.cpf = "Informe o CPF do gestor"
+    // if (!result.data.cpf) pjErrors.cpf = "Informe o CPF do gestor" // Comentado, reverter caso necessário
     if (!result.data.legalAuthorization) {
       pjErrors.legalAuthorization = "Confirme que possui autorização legal para contratar em nome da empresa"
     }
@@ -145,44 +145,15 @@ export default function CheckoutFirstStep() {
 
   return (
     <div className="text-[#3F3F3F]">
-      <h1>{title}</h1>
       <p className="text-[20px] font-bold">{description}</p>
+      <h1>{title}</h1>
 
       <form
-        className="grid gap-4 mt-7 text-[#3F3F3F] md:grid-cols-2 md:gap-x-6 md:gap-y-2"
+        className="grid gap-4 text-[#3F3F3F] md:grid-cols-2 md:gap-x-6 md:gap-y-2"
         onSubmit={handleSubmit}
         noValidate>
-        <p className="col-span-2 text-[20px] font-bold mb-4">1. Dados da Empresa</p>
-        <div className="col-span-2">
-          <Label htmlFor="cnpj" className="text-[16px] mb-2">CNPJ</Label>
-          <Input
-            type="text"
-            id="cnpj"
-            className="rounded-sm py-5"
-            value={form.cnpj}
-            onChange={handleChange("cnpj")}
-            aria-invalid={Boolean(errors.cnpj)}
-          />
-          {errors.cnpj && (
-            <p className="text-xs text-red-600 mt-1">{errors.cnpj}</p>
-          )}
-        </div>
-        <div className="col-span-2">
-          <Label htmlFor="razaosocial" className="text-[16px] mb-2">Razão Social</Label>
-          <Input
-            type="text"
-            id="razaosocial"
-            className="rounded-sm py-5"
-            value={form.razaosocial}
-            onChange={handleChange("razaosocial")}
-            aria-invalid={Boolean(errors.razaosocial)}
-          />
-          {errors.razaosocial && (
-            <p className="text-xs text-red-600 mt-1">{errors.razaosocial}</p>
-          )}
-        </div>
-        <p className="col-span-2 text-[20px] font-bold my-4">2. Dados do Gestor</p>
-        <div className="col-span-2 md:col-span-1">
+        <p className="col-span-2 text-[20px] font-bold my-4">Dados do Gestor</p>
+        {/* <div className="col-span-2 md:col-span-1">
           <Label htmlFor="cpf" className="text-[16px] mb-2">CPF</Label>
           <Input
             type="text"
@@ -197,9 +168,9 @@ export default function CheckoutFirstStep() {
           {errors.cpf && (
             <p className="text-xs text-red-600 mt-1">{errors.cpf}</p>
           )}
-        </div>
+        </div>  <!-- Comentado, reverter caso necessário --> */}
 
-        <div className="col-span-2 md:col-span-1">
+        <div className="col-span-2">
           <Label htmlFor="fullName" className="text-[16px] mb-2">Nome Completo</Label>
           <Input
             type="text"
@@ -211,22 +182,6 @@ export default function CheckoutFirstStep() {
           />
           {errors.fullName && (
             <p className="text-xs text-red-600 mt-1">{errors.fullName}</p>
-          )}
-        </div>
-
-        <div className="col-span-2 md:col-span-1">
-          <Label htmlFor="tel" className="text-[16px] mb-2">Celular</Label>
-          <PhoneInput
-            id="tel"
-            value={form.tel}
-            onChange={(tel) => {
-              setForm((current) => ({ ...current, tel }))
-              setErrors((current) => ({ ...current, tel: undefined }))
-            }}
-            aria-invalid={Boolean(errors.tel)}
-          />
-          {errors.tel && (
-            <p className="text-xs text-red-600 mt-1">{errors.tel}</p>
           )}
         </div>
 
@@ -246,7 +201,23 @@ export default function CheckoutFirstStep() {
           )}
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-2 md:col-span-1">
+          <Label htmlFor="tel" className="text-[16px] mb-2">Celular</Label>
+          <PhoneInput
+            id="tel"
+            value={form.tel}
+            onChange={(tel) => {
+              setForm((current) => ({ ...current, tel }))
+              setErrors((current) => ({ ...current, tel: undefined }))
+            }}
+            aria-invalid={Boolean(errors.tel)}
+          />
+          {errors.tel && (
+            <p className="text-xs text-red-600 mt-1">{errors.tel}</p>
+          )}
+        </div>
+
+        <div className="col-span-2 mb-4">
           <Label htmlFor="legal_authorization" className="text-[16px] mt-2">
             <Checkbox
               id="legal_authorization"
@@ -264,6 +235,37 @@ export default function CheckoutFirstStep() {
           </Label>
           {errors.legalAuthorization && (
             <p className="text-xs text-red-600 mt-1">{errors.legalAuthorization}</p>
+          )}
+        </div>
+
+        <p className="col-span-2 text-[20px] font-bold mb-4">Dados da Empresa</p>
+        <div className="col-span-2 md:col-span-1">
+          <Label htmlFor="cnpj" className="text-[16px] mb-2">CNPJ</Label>
+          <Input
+            type="text"
+            id="cnpj"
+            className="rounded-sm py-5"
+            value={form.cnpj}
+            onChange={handleChange("cnpj")}
+            aria-invalid={Boolean(errors.cnpj)}
+          />
+          {errors.cnpj && (
+            <p className="text-xs text-red-600 mt-1">{errors.cnpj}</p>
+          )}
+        </div>
+
+        <div className="col-span-2 md:col-span-1">
+          <Label htmlFor="razaosocial" className="text-[16px] mb-2">Razão Social</Label>
+          <Input
+            type="text"
+            id="razaosocial"
+            className="rounded-sm py-5"
+            value={form.razaosocial}
+            onChange={handleChange("razaosocial")}
+            aria-invalid={Boolean(errors.razaosocial)}
+          />
+          {errors.razaosocial && (
+            <p className="text-xs text-red-600 mt-1">{errors.razaosocial}</p>
           )}
         </div>
 

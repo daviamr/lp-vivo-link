@@ -174,7 +174,7 @@ export function mapFirstStepUpdate(
     ...(data.razaosocial ? { company_legal_name: data.razaosocial } : {}),
     manager: {
       name: toTitleCase(data.fullName),
-      cpf: sanitizeCpf(data.cpf ?? ""),
+      // cpf: sanitizeCpf(data.cpf ?? ""), // Comentado, reverter caso necessário
       email: data.email,
       phone: data.tel,
       legal_authorization: data.legalAuthorization ?? false,
@@ -227,7 +227,7 @@ export function mapThirdStepUpdate(data: CheckoutThirdStep): UpdateOrderPayload 
 
 export function mapFourthStepUpdate(data: CheckoutFourthStep): UpdateOrderPayload {
   return {
-    due_day: data.dueDay,
+    // due_day: data.dueDay, // Comentado, reverter caso necessário
     payment_method: mapPaymentMethod(data.paymentMethod),
     ...(data.paymentMethod === "debitAuto" && data.bank
       ? {
@@ -261,7 +261,7 @@ export function mapFifthStepUpdate(
     is_order: true,
     manager: {
       name: toTitleCase(firstStep.fullName),
-      cpf: sanitizeCpf(firstStep.cpf ?? ""),
+      // cpf: sanitizeCpf(firstStep.cpf ?? ""), // Comentado, reverter caso necessário
       email: firstStep.email,
       phone: data.phone,
       legal_authorization: firstStep.legalAuthorization ?? false,

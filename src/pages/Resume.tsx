@@ -69,7 +69,7 @@ function hydrateCheckout(order: Order) {
 
   // Step 4 — vencimento, pagamento e agendamento
   const hasFourthStepData =
-    order.due_day &&
+    // order.due_day && // Comentado, reverter caso necessário
     order.payment_method &&
     order.installation_preferred_date_one &&
     order.installation_preferred_period_one &&
@@ -80,7 +80,8 @@ function hydrateCheckout(order: Order) {
 
   if (hasFourthStepData) {
     const fourthStep: CheckoutFourthStep = {
-      dueDay: order.due_day as CheckoutFourthStep["dueDay"],
+      // dueDay: order.due_day as CheckoutFourthStep["dueDay"], // Comentado, reverter caso necessário
+      ...(order.due_day ? { dueDay: order.due_day as CheckoutFourthStep["dueDay"] } : {}),
       paymentMethod: parsePaymentMethod(order.payment_method),
       bank: parseBankName(order.bank_name),
       agency: order.bank_branch ?? undefined,

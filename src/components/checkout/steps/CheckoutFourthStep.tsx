@@ -1,7 +1,10 @@
 import { useStep } from "@/contexts/step/StepContext"
-import { dueDayOptions, getInstallationDateOptions, stepTitleAndDescription } from "./shared/StepUtils"
+import { /* dueDayOptions, */ getInstallationDateOptions, stepTitleAndDescription } from "./shared/StepUtils"
 import { useEffect, useMemo, useState } from "react"
-import { getFourthStep, saveFourthStep } from "@/lib/checkout-storage"
+import { getFourthStep, getSecondStep, saveFourthStep } from "@/lib/checkout-storage"
+import { getSelectedExtraOptions } from "@/lib/extras"
+import { getPlan } from "@/lib/plan-storage"
+import { formatPrice } from "@/lib/price"
 import type { CheckoutFourthStep } from "@/types/checkout"
 import { tryUpdateOrder } from "@/lib/order-actions"
 import { trackCheckoutStep } from "@/lib/gtm"
@@ -62,8 +65,8 @@ const installationOptions = [
 
 export default function CheckoutFourthStep() {
   const { step, nextStep } = useStep()
-  const title = stepTitleAndDescription[step].title
-  const description = stepTitleAndDescription[step].description
+  // const title = stepTitleAndDescription[step].title
+  // const description = stepTitleAndDescription[step].description
   const secondTitle = stepTitleAndDescription[step].secondTitle ?? ""
   const secondDescription = stepTitleAndDescription[step].secondDescription ?? ""
 
@@ -71,6 +74,12 @@ export default function CheckoutFourthStep() {
   const [errors, setErrors] = useState<Partial<Record<keyof FourthStepFormData, string>>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const installationDateOptions = useMemo(() => getInstallationDateOptions(20), [])
+
+  const plan = getPlan()
+  const extraIds = getSecondStep()?.extraIds ?? []
+  const extrasTotal = getSelectedExtraOptions(extraIds, plan?.extras)
+    .reduce((total, extra) => total + extra.price, 0)
+  const totalMonthly = (plan?.monthlyPrice ?? 0) + extrasTotal
 
   useEffect(() => {
     const saved = getFourthStep()
@@ -123,11 +132,11 @@ export default function CheckoutFourthStep() {
   const firstCard = () => {
     return (
       <div className="text-[#3F3F3F]">
-        <h1>{title}</h1>
-        <p className="text-[20px] font-bold">{description}</p>
+        {/* <h1>{title}</h1>
+        <p className="text-[20px] font-bold">{description}</p> <!-- Comentado, reverter caso necessário --> */}
 
-        <div className="grid gap-4 mt-7 text-[#3F3F3F] md:grid-cols-6 md:gap-x-6 md:gap-y-3">
-          <div className="md:col-span-6">
+        <div className="grid gap-4 text-[#3F3F3F] md:grid-cols-6 md:gap-x-6 md:gap-y-3">
+          {/* <div className="md:col-span-6">
             <RadioGroup
               value={form.dueDay}
               onValueChange={handleSelectChange("dueDay")}
@@ -147,7 +156,7 @@ export default function CheckoutFourthStep() {
               <p className="text-xs text-red-600 mt-1">{errors.dueDay}</p>
             )}
             <span className="text-xs">*Sua fatura digital será enviada por e-mail.</span>
-          </div>
+          </div> <!-- Comentado, reverter caso necessário --> */}
 
           <div className="mt-2 md:col-span-6">
             <p className="text-[20px] font-bold">Escolha a forma de pagamento</p>
@@ -185,11 +194,17 @@ export default function CheckoutFourthStep() {
               }}
               className="grid grid-cols-1 gap-2 md:grid-cols-2">
               <div className="flex items-center justify-between py-4 px-4 border rounded-sm">
-                <Label htmlFor="bankSlip" className="text-[16px]">Boleto Bancário</Label>
+                <Label htmlFor="bankSlip" className="flex-col items-start gap-0 text-[16px] leading-normal">
+                  Boleto Bancário
+                  <span className="font-bold">R$ {formatPrice(totalMonthly)}/mês</span>
+                </Label>
                 <RadioGroupItem value="bankSlip" id="bankSlip" className="bg-white h-6 w-6" />
               </div>
               <div className="flex items-center justify-between py-4 px-4 border rounded-sm bg-[#DDF9EC]">
-                <Label htmlFor="debitAuto" className="text-[16px]">Débito Automático</Label>
+                <Label htmlFor="debitAuto" className="flex-col items-start gap-0 text-[16px] text-[#1A311E] leading-normal">
+                  Débito Automático
+                  <span className="font-bold">R$ {formatPrice(totalMonthly - 10)}/mês</span>
+                </Label>
                 <RadioGroupItem value="debitAuto" id="debitAuto" className="bg-white h-6 w-6" />
               </div>
             </RadioGroup>

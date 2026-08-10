@@ -40,11 +40,12 @@ function requiredInstallationDate() {
 
 export const fourthStepSchema = z
   .object({
-    dueDay: requiredSelect("Selecione o dia de vencimento").refine(
-      (value): value is (typeof dueDayValues)[number] =>
-        dueDayValues.includes(value as (typeof dueDayValues)[number]),
-      "Selecione o dia de vencimento",
-    ),
+    // dueDay: requiredSelect("Selecione o dia de vencimento").refine(
+    //   (value): value is (typeof dueDayValues)[number] =>
+    //     dueDayValues.includes(value as (typeof dueDayValues)[number]),
+    //   "Selecione o dia de vencimento",
+    // ), // Comentado, reverter caso necessário
+    dueDay: z.preprocess(toOptionalString, z.string().trim().optional()),
     paymentMethod: requiredSelect("Selecione a forma de pagamento").refine(
       (value): value is (typeof paymentMethodValues)[number] =>
         paymentMethodValues.includes(value as (typeof paymentMethodValues)[number]),
@@ -129,7 +130,7 @@ export const fourthStepSchema = z
 export type FourthStepFormData = z.infer<typeof fourthStepSchema>
 
 export type FourthStepFormInput = {
-  dueDay: "" | FourthStepFormData["dueDay"]
+  dueDay?: "" | NonNullable<FourthStepFormData["dueDay"]>
   paymentMethod: "" | FourthStepFormData["paymentMethod"]
   bank?: string | ""
   agency?: string

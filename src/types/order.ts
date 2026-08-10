@@ -37,7 +37,7 @@ export type OrderPriceSummary = {
 
 export type OrderManager = {
   name: string
-  cpf: string
+  cpf?: string // Opcional temporariamente — reverter caso necessário
   email: string
   phone: string
   birth_date?: string
