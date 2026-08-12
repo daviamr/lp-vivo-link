@@ -24,12 +24,12 @@ export function App() {
   const token = searchParams.get("token")
 
   const ICONS = [
-    { title: "Saúde", icon: '/public/saude.png' },
-    { title: "E-commerce", icon: '/public/ecommerce.png' },
-    { title: "Call center", icon: '/public/callcenter.png' },
-    { title: "Varejo", icon: '/public/varejo.png' },
-    { title: "Financeiro", icon: '/public/financeiro.png' },
-    { title: "Nuvem/ERP", icon: '/public/nuvem.png' },
+    { title: "Saúde", icon: '/saude.png' },
+    { title: "E-commerce", icon: '/ecommerce.png' },
+    { title: "Call center", icon: '/callcenter.png' },
+    { title: "Varejo", icon: '/varejo.png' },
+    { title: "Financeiro", icon: '/financeiro.png' },
+    { title: "Nuvem/ERP", icon: '/nuvem.png' },
   ]
 
   useEffect(() => {
