@@ -2,11 +2,11 @@ import { Copyright } from "lucide-react";
 import DefaultLayout from "../default-layout/DefaultLayout";
 import { useNavigate } from "react-router-dom";
 import { getPartnerHashFromUrl } from "@/lib/partner-hash";
-import { usePartnerId } from "@/hooks/use-partner-id";
+import { usePartner } from "@/hooks/use-partner-id";
 
 export function Footer({ setIsTalkToUsOpen }: { setIsTalkToUsOpen: (isOpen: boolean) => void }) {
   const navigate = useNavigate();
-  const partnerId = usePartnerId();
+  const { partnerId, partnerName, partnerLogoUrl } = usePartner();
   const partnerHash = getPartnerHashFromUrl();
   const privacyPath = partnerHash ? `/${partnerHash}/politica-de-privacidade` : "/politica-de-privacidade";
 
@@ -31,11 +31,11 @@ export function Footer({ setIsTalkToUsOpen }: { setIsTalkToUsOpen: (isOpen: bool
               className="w-[91px] h-[48px]"
             />
 
-            {partnerId != null && (
+            {partnerLogoUrl && (
               <img
                 className="my-4 w-auto h-[39px]"
-                src="/logo-gold.png"
-                alt="Logo" />
+                src={partnerLogoUrl}
+                alt={partnerName ?? "Parceiro"} />
             )}
           </div>
 

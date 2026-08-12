@@ -100,10 +100,15 @@ function hydrateCheckout(order: Order) {
     saveFourthStep(fourthStep)
   }
 
-  // Step 5 — confirmação via SMS
-  if (order.phone) {
+  // Step 5 — dados pessoais complementares
+  if (order.phone || order.cpf) {
     saveFifthStep({
-      phone: order.phone,
+      cpf: order.cpf ? formatCpf(order.cpf) : "",
+      bornDate: parseApiDate(order.birth_date),
+      rg: order.rg?.number ?? "",
+      issuingAgency: order.rg?.issuingAuthority ?? "",
+      issuingDate: parseApiDate(order.rg?.issueDate),
+      phone: order.phone ?? "",
       phone2: order.additional_phone ?? undefined,
       termsOfUse: order.terms_accepted ?? false,
       communication: order.accept_offers ?? false,
@@ -132,6 +137,7 @@ export default function Resume() {
           expiresAt: data.order_token_expires_at,
           partnerId: data.partial_data.partner_id,
           partnerName: data.partial_data.business_partner ?? null,
+          partnerLogoUrl: null,
         })
 
         hydrateCheckout(data.partial_data)

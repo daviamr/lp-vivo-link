@@ -253,6 +253,13 @@ export function mapFifthStepUpdate(
   firstStep: CheckoutFirstStep,
 ): UpdateOrderPayload {
   return {
+    cpf: sanitizeCpf(data.cpf),
+    birth_date: formatApiDate(data.bornDate),
+    rg: {
+      number: data.rg.trim(),
+      issuingAuthority: data.issuingAgency.trim().toUpperCase(),
+      issueDate: formatApiDate(data.issuingDate),
+    },
     additional_phone: data.phone2?.trim() || null,
     order_number: orderNumber,
     terms_accepted: data.termsOfUse,
@@ -261,7 +268,7 @@ export function mapFifthStepUpdate(
     is_order: true,
     manager: {
       name: toTitleCase(firstStep.fullName),
-      // cpf: sanitizeCpf(firstStep.cpf ?? ""), // Comentado, reverter caso necessário
+      cpf: sanitizeCpf(data.cpf),
       email: firstStep.email,
       phone: data.phone,
       legal_authorization: firstStep.legalAuthorization ?? false,

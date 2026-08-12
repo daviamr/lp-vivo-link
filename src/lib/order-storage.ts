@@ -9,6 +9,7 @@ export type OrderSession = {
   expiresAt?: string
   partnerId: number | null
   partnerName: string | null
+  partnerLogoUrl: string | null
 }
 
 export function saveOrderSession(session: OrderSession) {
@@ -35,6 +36,7 @@ export function savePartnerData(partner: PartnerData | null) {
     ...session,
     partnerId: partner?.partner_id ?? null,
     partnerName: partner?.partner_name ?? null,
+    partnerLogoUrl: partner?.logo_url ?? null,
   })
 }
 

@@ -180,6 +180,7 @@ export default function CepModal() {
         expiresAt: response.expires_at,
         partnerId: partner?.partner_id ?? null,
         partnerName: partner?.partner_name ?? null,
+        partnerLogoUrl: partner?.logo_url ?? null,
       })
       saveCepAddress(result.data)
       trackCepSubmitted("disponivel")

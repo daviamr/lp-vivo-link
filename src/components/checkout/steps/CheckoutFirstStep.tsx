@@ -39,6 +39,7 @@ export default function CheckoutFirstStep() {
 
   const [form, setForm] = useState<FirstStepFormData>(initialForm)
   const [errors, setErrors] = useState<Partial<Record<keyof FirstStepFormData, string>>>({})
+  const [emailWarning, setEmailWarning] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function CheckoutFirstStep() {
   ) => {
     setForm((current) => ({ ...current, [field]: e.target.value }))
     setErrors((current) => ({ ...current, [field]: undefined }))
+    if (field === "email") setEmailWarning(null)
   }
 
   // const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +121,9 @@ export default function CheckoutFirstStep() {
       const validationErrors: Partial<Record<keyof FirstStepFormData, string>> = {}
 
       if (emailResult !== null && !emailResult.isValid) {
-        validationErrors.email = "E-mail inválido"
+        setEmailWarning("Confirme se o e-mail está correto.")
+      } else {
+        setEmailWarning(null)
       }
 
       if (phoneValid === false) {
@@ -196,6 +200,9 @@ export default function CheckoutFirstStep() {
             aria-invalid={Boolean(errors.email)}
           />
           <p className="text-xs mt-1">E-mail para envio da fatura digital.</p>
+          {emailWarning && (
+            <p className="text-xs text-amber-600 mt-1">{emailWarning}</p>
+          )}
           {errors.email && (
             <p className="text-xs text-red-600 mt-1">{errors.email}</p>
           )}

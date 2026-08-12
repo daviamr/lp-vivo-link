@@ -2,6 +2,7 @@ import { useStep } from "@/contexts/step/StepContext"
 import { stepTitleAndDescription } from "./shared/StepUtils"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { formatCpf } from "@/lib/cpf"
 import { getFifthStep, getFirstStep, saveFifthStep, saveOrderNumber } from "@/lib/checkout-storage"
 import { tryCloseOrder, tryUpdateOrder } from "@/lib/order-actions"
 import { trackCheckoutStep, trackPurchase } from "@/lib/gtm"
@@ -15,6 +16,7 @@ import {
 } from "@/schemas/checkout/fifth-step.schema"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { PhoneInput } from "@/components/ui/phone-input/PhoneInput"
 import { Checkbox } from "@/components/ui/checkbox"
 
@@ -31,6 +33,11 @@ function generateOrderNumber(orderId?: number): string {
 }
 
 const initialForm: FifthStepFormInput = {
+  cpf: "",
+  bornDate: "",
+  rg: "",
+  issuingAgency: "",
+  issuingDate: "",
   phone: "",
   phone2: "",
   termsOfUse: true,
@@ -40,6 +47,8 @@ const initialForm: FifthStepFormInput = {
 export default function CheckoutFifthStep() {
   const { step } = useStep()
   const navigate = useNavigate()
+  const title = stepTitleAndDescription[step].title
+  const description = stepTitleAndDescription[step].description
   const secondTitle = stepTitleAndDescription[step].secondTitle ?? ""
   const secondDescription = stepTitleAndDescription[step].secondDescription ?? ""
 
@@ -59,6 +68,18 @@ export default function CheckoutFifthStep() {
       setForm((current) => ({ ...current, phone: firstStep.tel }))
     }
   }, [])
+
+  const handleChange = (field: keyof FifthStepFormInput) => (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setForm((current) => ({ ...current, [field]: e.target.value }))
+    setErrors((current) => ({ ...current, [field]: undefined }))
+  }
+
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((current) => ({ ...current, cpf: formatCpf(e.target.value) }))
+    setErrors((current) => ({ ...current, cpf: undefined }))
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -88,7 +109,7 @@ export default function CheckoutFifthStep() {
       saveOrderNumber(orderNumber)
       navigate("/sucesso")
     } catch {
-      setErrors({ phone: "Não foi possível enviar os dados. Tente novamente." })
+      setErrors({ cpf: "Não foi possível enviar os dados. Tente novamente." })
     } finally {
       setIsSubmitting(false)
     }
@@ -96,7 +117,94 @@ export default function CheckoutFifthStep() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="text-[#3F3F3F]">
-      <h1 className="text-[20px] font-bold mb-1">{secondTitle}</h1>
+      <h1>{title}</h1>
+      <p className="text-[20px] font-bold">{description}</p>
+
+      <div className="grid gap-4 mt-7 text-[#3F3F3F] md:grid-cols-6 md:gap-x-6 md:gap-y-3">
+        <div className="md:col-span-3">
+          <Label htmlFor="cpf" className="text-[16px] mb-2">CPF</Label>
+          <Input
+            type="text"
+            id="cpf"
+            inputMode="numeric"
+            placeholder="000.000.000-00"
+            className="rounded-sm py-5"
+            value={form.cpf}
+            onChange={handleCpfChange}
+            aria-invalid={Boolean(errors.cpf)}
+          />
+          {errors.cpf && (
+            <p className="text-xs text-red-600 mt-1">{errors.cpf}</p>
+          )}
+        </div>
+
+        <div className="md:col-span-3">
+          <Label htmlFor="bornDate" className="text-[16px] mb-2">Data de Nascimento</Label>
+          <Input
+            type="date"
+            id="bornDate"
+            className="rounded-sm py-5"
+            min="1900-01-01"
+            max="9999-12-31"
+            value={form.bornDate}
+            onChange={handleChange("bornDate")}
+            aria-invalid={Boolean(errors.bornDate)}
+          />
+          {errors.bornDate && (
+            <p className="text-xs text-red-600 mt-1">{errors.bornDate}</p>
+          )}
+        </div>
+
+        <div className="md:col-span-2">
+          <Label htmlFor="rg" className="text-[16px] mb-2">RG</Label>
+          <Input
+            type="text"
+            id="rg"
+            placeholder="00.000.000-0"
+            className="rounded-sm py-5"
+            value={form.rg}
+            onChange={handleChange("rg")}
+            aria-invalid={Boolean(errors.rg)}
+          />
+          {errors.rg && (
+            <p className="text-xs text-red-600 mt-1">{errors.rg}</p>
+          )}
+        </div>
+
+        <div className="md:col-span-2">
+          <Label htmlFor="issuingAgency" className="text-[16px] mb-2">Órgão Expedidor</Label>
+          <Input
+            type="text"
+            id="issuingAgency"
+            className="rounded-sm py-5"
+            value={form.issuingAgency}
+            onChange={handleChange("issuingAgency")}
+            aria-invalid={Boolean(errors.issuingAgency)}
+          />
+          {errors.issuingAgency && (
+            <p className="text-xs text-red-600 mt-1">{errors.issuingAgency}</p>
+          )}
+        </div>
+
+        <div className="md:col-span-2">
+          <Label htmlFor="issuingDate" className="text-[16px] mb-2">Data de Expedição</Label>
+          <Input
+            type="date"
+            id="issuingDate"
+            className="rounded-sm py-5"
+            min="1900-01-01"
+            max="9999-12-31"
+            value={form.issuingDate}
+            onChange={handleChange("issuingDate")}
+            aria-invalid={Boolean(errors.issuingDate)}
+          />
+          {errors.issuingDate && (
+            <p className="text-xs text-red-600 mt-1">{errors.issuingDate}</p>
+          )}
+        </div>
+      </div>
+
+      <h1 className="text-[20px] font-bold mb-1 mt-7">{secondTitle}</h1>
       <p className="text-xs">
         <span className="font-bold uppercase text-[#FF0000] mr-2">Importante!</span>
         {secondDescription}

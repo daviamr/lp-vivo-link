@@ -1,22 +1,35 @@
 import { useEffect, useState } from "react"
 import { getOrderSession } from "@/lib/order-storage"
 
-export function usePartnerId() {
-  const [partnerId, setPartnerId] = useState<number | null>(
-    () => getOrderSession()?.partnerId ?? null,
-  )
+type PartnerSession = {
+  partnerId: number | null
+  partnerName: string | null
+  partnerLogoUrl: string | null
+}
+
+function readPartnerSession(): PartnerSession {
+  const session = getOrderSession()
+  return {
+    partnerId: session?.partnerId ?? null,
+    partnerName: session?.partnerName ?? null,
+    partnerLogoUrl: session?.partnerLogoUrl ?? null,
+  }
+}
+
+export function usePartner() {
+  const [partner, setPartner] = useState<PartnerSession>(readPartnerSession)
 
   useEffect(() => {
-    const session = getOrderSession()
-    if (session?.partnerId != null) {
-      setPartnerId(session.partnerId)
+    const current = readPartnerSession()
+    if (current.partnerId != null) {
+      setPartner(current)
       return
     }
 
     const interval = setInterval(() => {
-      const currentSession = getOrderSession()
-      if (currentSession?.partnerId != null) {
-        setPartnerId(currentSession.partnerId)
+      const next = readPartnerSession()
+      if (next.partnerId != null) {
+        setPartner(next)
         clearInterval(interval)
       }
     }, 500)
@@ -24,5 +37,9 @@ export function usePartnerId() {
     return () => clearInterval(interval)
   }, [])
 
-  return partnerId
+  return partner
+}
+
+export function usePartnerId() {
+  return usePartner().partnerId
 }

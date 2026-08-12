@@ -34,7 +34,7 @@ export default function Hero({ plan }: HeroProps) {
 
   return (
     <div className="overflow-hidden bg-[#f2f2f2] bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat text-[#ffffff]">
-      <DefaultLayout className="flex flex-col items-center justify-between md:flex-row">
+      <DefaultLayout className="flex flex-col items-center justify-between mb-4 md:mb-0 md:flex-row">
         <div className="flex flex-col justify-center items-center gap-4 pt-15 max-w-140 md:items-start md:justify-start md:pb-15">
 
           <div className="text-center md:text-left">

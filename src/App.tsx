@@ -43,6 +43,7 @@ export function App() {
           expiresAt: data.order_token_expires_at,
           partnerId: null,
           partnerName: null,
+          partnerLogoUrl: null,
         })
 
         const order = data.partial_data
@@ -125,7 +126,7 @@ export function App() {
             <p className="text-center text-[#525252]">Nenhum plano disponível no momento.</p>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" id="plans">
+          <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 md:justify-items-stretch lg:grid-cols-4 gap-4" id="plans">
             {visiblePlans.map((plan) => (
               <Card key={plan.id} plan={plan} />
             ))}
@@ -155,7 +156,7 @@ export function App() {
         </DefaultLayout>
       </div>
 
-      <div className="bg-[#EAEAEA] py-10 text-[#3F3F3F]">
+      <div id="comparativo" className="bg-[#EAEAEA] py-10 text-[#3F3F3F]">
         <DefaultLayout>
           <div className="max-w-210 m-auto flex flex-col items-center text-center gap-4 mb-4">
 
@@ -184,7 +185,7 @@ export function App() {
         </DefaultLayout>
       </div>
 
-      <div className="text-[#3F3F3F]">
+      <div id="vantagens" className="text-[#3F3F3F]">
         <DefaultLayout>
           <div className="mt-16">
             <h3 className="mb-1 text-[20px] font-semibold md:text-[26px]">
@@ -201,7 +202,7 @@ export function App() {
       </div>
 
       {/*FAQ*/}
-      <div className="py-10 text-[#3F3F3F]">
+      <div id="duvidas" className="py-10 text-[#3F3F3F]">
         <DefaultLayout>
           <h3 className="mb-1 text-[20px] font-semibold md:text-[26px] pb-6 border-b">
             Internet dedicada e LAN-to-LAN (link dedicado): Tire suas dúvidas

@@ -1,3 +1,4 @@
+import { isValidCpf } from "@/lib/cpf"
 import { isValidPhoneNumber } from "@/lib/phone"
 import { z } from "zod"
 
@@ -13,7 +14,22 @@ function toOptionalString(value: unknown) {
   return String(value)
 }
 
+function requiredString(message: string) {
+  return z.preprocess(toStringValue, z.string().trim().min(1, message))
+}
+
 export const fifthStepSchema = z.object({
+  cpf: z.preprocess(
+    toStringValue,
+    z
+      .string()
+      .trim()
+      .refine(isValidCpf, "Informe um CPF válido"),
+  ),
+  bornDate: requiredString("Informe a data de nascimento"),
+  rg: requiredString("Informe o RG"),
+  issuingAgency: requiredString("Informe o órgão expedidor"),
+  issuingDate: requiredString("Informe a data de expedição"),
   phone: z.preprocess(
     toStringValue,
     z.string().trim().refine(isValidPhoneNumber, "Informe um telefone válido"),
@@ -33,6 +49,11 @@ export const fifthStepSchema = z.object({
 export type FifthStepFormData = z.infer<typeof fifthStepSchema>
 
 export type FifthStepFormInput = {
+  cpf: string
+  bornDate: string
+  rg: string
+  issuingAgency: string
+  issuingDate: string
   phone: string
   phone2: string
   termsOfUse: boolean

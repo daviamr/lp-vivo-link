@@ -1,4 +1,5 @@
 import {
+  VIVO_CATEGORY,
   VIVO_COMPANY_ID,
   VIVO_COMPANY_NAME,
   VIVO_LANDING_PAGE,
@@ -13,6 +14,7 @@ export type TalkToUsMessagePayload = {
   company_id: number
   business_partner: string
   partner_id?: number | null
+  category: string
   landing_page: string
   name: string
   phone: string
@@ -72,6 +74,7 @@ export async function buildTalkToUsPayload(
     company_id: VIVO_COMPANY_ID,
     business_partner: partnerName.trim() || VIVO_COMPANY_NAME,
     partner_id: partnerId ?? null,
+    category: VIVO_CATEGORY,
     landing_page: VIVO_LANDING_PAGE,
     name: data.name.trim(),
     phone: parsePhoneNumber(data.phone).localNumber,

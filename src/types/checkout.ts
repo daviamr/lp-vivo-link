@@ -46,6 +46,11 @@ export type CheckoutFourthStep = {
 }
 
 export type CheckoutFifthStep = {
+  cpf: string
+  bornDate: string
+  rg: string
+  issuingAgency: string
+  issuingDate: string
   phone: string
   phone2?: string
   termsOfUse: boolean
