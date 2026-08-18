@@ -72,8 +72,8 @@ export default function CheckoutSecondStep({ onExtraIdsChange }: CheckoutSecondS
 
   return (
     <div className="text-[#3F3F3F]">
-      <h1>{title}</h1>
-      <p className="text-[20px] font-bold">{description}</p>
+      <h1 className="text-lg leading-snug break-words md:text-2xl">{title}</h1>
+      <p className="text-base font-bold md:text-[20px]">{description}</p>
 
       <form onSubmit={handleSubmit} noValidate>
         <ExtrasCard

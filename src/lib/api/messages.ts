@@ -34,33 +34,23 @@ export const TALK_TO_US_API_URL = "https://evolution.bigdates.com.br:3720/teleco
 
 async function resolveTalkToUsPartner() {
   const session = getOrderSession()
-
-  if (session?.partnerId != null && session.partnerName) {
-    return {
-      partnerId: session.partnerId,
-      partnerName: session.partnerName,
-    }
-  }
-
   const cepAddress = getCepAddress()
-  if (!cepAddress?.cep) {
-    return {
-      partnerId: session?.partnerId ?? null,
-      partnerName: session?.partnerName ?? "",
+
+  if (cepAddress?.cep) {
+    try {
+      const partner = await resolvePartner(cepAddress.cep)
+      return {
+        partnerId: partner?.partner_id ?? session?.partnerId ?? null,
+        partnerName: partner?.partner_name ?? session?.partnerName ?? "",
+      }
+    } catch {
+      // Fall back to the stored session if the resolver is unavailable.
     }
   }
 
-  try {
-    const partner = await resolvePartner(cepAddress.cep)
-    return {
-      partnerId: partner?.partner_id ?? session?.partnerId ?? null,
-      partnerName: partner?.partner_name ?? session?.partnerName ?? "",
-    }
-  } catch {
-    return {
-      partnerId: session?.partnerId ?? null,
-      partnerName: session?.partnerName ?? "",
-    }
+  return {
+    partnerId: session?.partnerId ?? null,
+    partnerName: session?.partnerName ?? "",
   }
 }
 

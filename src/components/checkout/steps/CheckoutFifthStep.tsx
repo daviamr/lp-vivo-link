@@ -117,8 +117,8 @@ export default function CheckoutFifthStep() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="text-[#3F3F3F]">
-      <h1>{title}</h1>
-      <p className="text-[20px] font-bold">{description}</p>
+      <h1 className="text-lg leading-snug break-words md:text-2xl">{title}</h1>
+      <p className="text-base font-bold md:text-[20px]">{description}</p>
 
       <div className="grid gap-4 mt-7 text-[#3F3F3F] md:grid-cols-6 md:gap-x-6 md:gap-y-3">
         <div className="md:col-span-3">
@@ -244,7 +244,7 @@ export default function CheckoutFifthStep() {
         </div>
 
         <div className="md:col-span-6">
-          <Label htmlFor="termsOfUse" className="text-[16px] mb-2">
+          <Label htmlFor="termsOfUse" className="mb-2 items-start whitespace-normal text-left text-[16px] leading-snug">
             <Checkbox
               id="termsOfUse"
               className="rounded-full"
@@ -265,7 +265,7 @@ export default function CheckoutFifthStep() {
         </div>
 
         <div className="md:col-span-6">
-          <Label htmlFor="communication" className="text-[16px] mb-2">
+          <Label htmlFor="communication" className="mb-2 items-start whitespace-normal text-left text-[16px] leading-snug">
             <Checkbox
               id="communication"
               className="rounded-full"

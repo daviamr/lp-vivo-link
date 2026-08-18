@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
-import { getOrderSession } from "@/lib/order-storage"
+import { useLocation } from "react-router-dom"
+import { getOrderSession, ORDER_SESSION_EVENT } from "@/lib/order-storage"
 
 type PartnerSession = {
   partnerId: number | null
   partnerName: string | null
   partnerLogoUrl: string | null
+  partnerCnpj: string | null
 }
 
 function readPartnerSession(): PartnerSession {
@@ -13,29 +15,26 @@ function readPartnerSession(): PartnerSession {
     partnerId: session?.partnerId ?? null,
     partnerName: session?.partnerName ?? null,
     partnerLogoUrl: session?.partnerLogoUrl ?? null,
+    partnerCnpj: session?.partnerCnpj ?? null,
   }
 }
 
 export function usePartner() {
+  const { pathname } = useLocation()
   const [partner, setPartner] = useState<PartnerSession>(readPartnerSession)
 
   useEffect(() => {
-    const current = readPartnerSession()
-    if (current.partnerId != null) {
-      setPartner(current)
-      return
+    const sync = () => setPartner(readPartnerSession())
+
+    sync()
+    window.addEventListener(ORDER_SESSION_EVENT, sync)
+    window.addEventListener("storage", sync)
+
+    return () => {
+      window.removeEventListener(ORDER_SESSION_EVENT, sync)
+      window.removeEventListener("storage", sync)
     }
-
-    const interval = setInterval(() => {
-      const next = readPartnerSession()
-      if (next.partnerId != null) {
-        setPartner(next)
-        clearInterval(interval)
-      }
-    }, 500)
-
-    return () => clearInterval(interval)
-  }, [])
+  }, [pathname])
 
   return partner
 }

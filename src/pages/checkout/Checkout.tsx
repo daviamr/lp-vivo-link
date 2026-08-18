@@ -33,9 +33,9 @@ function CheckoutContent({ isTransbordo }: { isTransbordo: boolean }) {
   }, [navigate, isTransbordo])
 
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] bg-[#EAEAEA]">
-      <DefaultLayout className="w-full lg:flex lg:gap-8">
-        <div className={`w-full mb-9 ${plan ? 'max-w-175 lg:w-2/3' : ''}`}>
+    <div className="relative min-h-[calc(100dvh-5rem)] overflow-x-hidden bg-[#EAEAEA]">
+      <DefaultLayout className="w-full min-w-0 lg:flex lg:gap-8">
+        <div className={`min-w-0 w-full mb-9 ${plan ? 'max-w-175 lg:w-2/3' : ''}`}>
           <CheckoutProgress progress={step} />
 
           <CheckoutDefaultCard>

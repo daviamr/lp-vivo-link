@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/client"
 import { formatPrice } from "@/lib/price"
-import { VIVO_CLIENT_TYPE } from "@/lib/constants/vivo"
+import { VIVO_CATEGORY, VIVO_CLIENT_TYPE } from "@/lib/constants/vivo"
 import type { Plan, PlanDetail } from "@/types/plan"
 import type { Product, ProductDetail, ProductsResponse } from "@/types/product"
 
@@ -121,13 +121,19 @@ export async function fetchProducts(page = 1, perPage = 100) {
       per_page: perPage,
     },
   })
+  console.log(data)
 
   if (!data.success) {
     throw new Error("Não foi possível carregar os planos.")
   }
 
   return data.products
-    .filter((product) => product.online && product.company_id === 9)
+    .filter(
+      (product) =>
+        product.online &&
+        product.company_id === 9 &&
+        product.category === VIVO_CATEGORY,
+    )
     .map(mapProductToPlan)
     .sort((a, b) => a.monthlyPrice - b.monthlyPrice)
 }

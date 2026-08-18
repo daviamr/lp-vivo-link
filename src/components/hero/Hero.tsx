@@ -33,7 +33,7 @@ export default function Hero({ plan }: HeroProps) {
   }
 
   return (
-    <div className="overflow-hidden bg-[#f2f2f2] bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat text-[#ffffff]">
+    <div className="overflow-hidden bg-[#660099] text-white md:bg-[url('/hero-bg.png')] md:bg-cover md:bg-center md:bg-no-repeat">
       <DefaultLayout className="flex flex-col items-center justify-between mb-4 md:mb-0 md:flex-row">
         <div className="flex flex-col justify-center items-center gap-4 pt-15 max-w-140 md:items-start md:justify-start md:pb-15">
 
@@ -70,7 +70,7 @@ export default function Hero({ plan }: HeroProps) {
                 </div>
               </div>
               <div className="flex justify-center items-center w-full text-center">
-                <p className="relative -top-4 text-[10px] max-w-40 text-left">
+                <p className="relative -top-4 text-[10px] max-w-40 text-center">
                   {plan?.offerSubtitle}
                 </p>
               </div>

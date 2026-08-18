@@ -1,11 +1,25 @@
 import { Menu } from "lucide-react"
-import { useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useState, type MouseEvent } from "react"
+import { Link, useLocation } from "react-router-dom"
 import { usePartner } from "@/hooks/use-partner-id"
 import { getPartnerHashFromUrl } from "@/lib/partner-hash"
 
 function isCheckoutPath(pathname: string) {
   return pathname === "/contratacao" || pathname.endsWith("/contratacao")
+}
+
+const NAV_ITEMS = [
+  { label: "Vantagens", hash: "vantagens" },
+  { label: "Comparativo", hash: "comparativo" },
+  { label: "Dúvidas frequentes", hash: "duvidas" },
+] as const
+
+function scrollToSection(hash: string) {
+  const target = document.getElementById(hash)
+  if (!target) return false
+
+  target.scrollIntoView({ behavior: "smooth", block: "start" })
+  return true
 }
 
 export default function Header() {
@@ -16,24 +30,28 @@ export default function Header() {
   const partnerHash = getPartnerHashFromUrl()
   const homePath = partnerHash ? `/${partnerHash}` : "/"
 
-  const navItems = [
-    { label: "Vantagens", href: `${homePath}#vantagens` },
-    { label: "Comparativo", href: `${homePath}#comparativo` },
-    { label: "Dúvidas frequentes", href: `${homePath}#duvidas` },
-  ]
+  const handleNavClick = (hash: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    setIsMenuOpen(false)
+
+    if (!scrollToSection(hash)) return
+
+    event.preventDefault()
+    const nextUrl = `${homePath}#${hash}`
+    window.history.replaceState(null, "", nextUrl)
+  }
 
   if (!showNav) {
     return (
       <header className="py-4 bg-white">
         <div className="container max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between">
-            <a href={homePath}>
+            <Link to={homePath}>
               <img
                 src="/logo-vivo-empresas.png"
                 alt="Vivo Empresas"
                 className="w-[91px] h-[48px]"
               />
-            </a>
+            </Link>
             {partnerLogoUrl && (
               <img
                 src={partnerLogoUrl}
@@ -52,13 +70,13 @@ export default function Header() {
       <div className="container max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between">
           <div className={`flex items-center justify-between w-full gap-8 md:gap-40 md:justify-start ${isMenuOpen ? "pb-4" : ""}`}>
-            <a href={homePath}>
+            <Link to={homePath}>
               <img
                 src="/logo-vivo-empresas.png"
                 alt="Vivo Empresas"
                 className="w-[91px] h-[48px]"
               />
-            </a>
+            </Link>
 
             <Menu
               className="md:hidden cursor-pointer"
@@ -66,10 +84,15 @@ export default function Header() {
             />
 
             <div className="hidden w-full items-center justify-end gap-8 md:flex md:px-12">
-              {navItems.map((item) => (
-                <a key={item.href} href={item.href} className="text-[#505050]">
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.hash}
+                  to={`${homePath}#${item.hash}`}
+                  onClick={handleNavClick(item.hash)}
+                  className="text-[#505050]"
+                >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -84,15 +107,15 @@ export default function Header() {
       </div>
       {isMenuOpen && (
         <ul className="flex flex-col border-t bg-white w-full">
-          {navItems.map((item) => (
-            <li key={item.href} className="pt-4 select-none">
-              <a
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
+          {NAV_ITEMS.map((item) => (
+            <li key={item.hash} className="pt-4 select-none">
+              <Link
+                to={`${homePath}#${item.hash}`}
+                onClick={handleNavClick(item.hash)}
                 className="pl-4 text-[#505050]"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
           {partnerLogoUrl && (

@@ -1,7 +1,9 @@
 import { touchFlowTimestamp } from "@/lib/storage-expiry"
+import { getPartnerHashFromUrl } from "@/lib/partner-hash"
 import type { PartnerData } from "@/types/order"
 
 const ORDER_SESSION_KEY = "vivo-order-session"
+export const ORDER_SESSION_EVENT = "vivo-order-session-changed"
 
 export type OrderSession = {
   orderId: number
@@ -10,11 +12,28 @@ export type OrderSession = {
   partnerId: number | null
   partnerName: string | null
   partnerLogoUrl: string | null
+  partnerHash?: string | null
+  partnerCnpj?: string | null
+}
+
+function notifyOrderSessionChanged() {
+  window.dispatchEvent(new Event(ORDER_SESSION_EVENT))
+}
+
+export function toPartnerSessionFields(partner: PartnerData | null) {
+  return {
+    partnerId: partner?.partner_id ?? null,
+    partnerName: partner?.partner_name ?? null,
+    partnerLogoUrl: partner?.logo_url ?? null,
+    partnerHash: partner?.partner_hash ?? getPartnerHashFromUrl(),
+    partnerCnpj: partner?.cnpj ?? null,
+  }
 }
 
 export function saveOrderSession(session: OrderSession) {
   localStorage.setItem(ORDER_SESSION_KEY, JSON.stringify(session))
   touchFlowTimestamp()
+  notifyOrderSessionChanged()
 }
 
 export function getOrderSession(): OrderSession | null {
@@ -34,12 +53,11 @@ export function savePartnerData(partner: PartnerData | null) {
 
   saveOrderSession({
     ...session,
-    partnerId: partner?.partner_id ?? null,
-    partnerName: partner?.partner_name ?? null,
-    partnerLogoUrl: partner?.logo_url ?? null,
+    ...toPartnerSessionFields(partner),
   })
 }
 
 export function clearOrderSession() {
   localStorage.removeItem(ORDER_SESSION_KEY)
+  notifyOrderSessionChanged()
 }

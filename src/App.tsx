@@ -7,7 +7,7 @@ import { fetchProducts } from "@/lib/api/products"
 import type { Plan } from "@/types/plan"
 import CardBenefits from "./components/card-benefits/CardBenefits"
 import Bubble from "./components/bubble/Bubble"
-import { useSearchParams } from "react-router-dom"
+import { useLocation, useSearchParams } from "react-router-dom"
 import { getOrderByToken } from "./lib/api/orders"
 import { saveOrderSession } from "@/lib/order-storage"
 import { HERO_PLAN_ID } from "@/lib/constants/vivo"
@@ -21,6 +21,7 @@ export function App() {
   const [currentPage, setCurrentPage] = useState(0)
   const [cardsPerPage, setCardsPerPage] = useState(4)
   const [searchParams] = useSearchParams()
+  const { hash } = useLocation()
   const token = searchParams.get("token")
 
   const ICONS = [
@@ -44,6 +45,8 @@ export function App() {
           partnerId: null,
           partnerName: null,
           partnerLogoUrl: null,
+          partnerHash: null,
+          partnerCnpj: null,
         })
 
         const order = data.partial_data
@@ -95,6 +98,17 @@ export function App() {
   useEffect(() => {
     setCurrentPage(0)
   }, [plans, cardsPerPage])
+
+  useEffect(() => {
+    const sectionId = hash.replace("#", "")
+    if (!sectionId) return
+
+    const timeout = window.setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 80)
+
+    return () => window.clearTimeout(timeout)
+  }, [hash])
 
   const totalPages = Math.ceil(plans.length / cardsPerPage)
   const visiblePlans = useMemo(
@@ -156,7 +170,7 @@ export function App() {
         </DefaultLayout>
       </div>
 
-      <div id="comparativo" className="bg-[#EAEAEA] py-10 text-[#3F3F3F]">
+      <div id="comparativo" className="scroll-mt-24 bg-[#EAEAEA] py-10 text-[#3F3F3F]">
         <DefaultLayout>
           <div className="max-w-210 m-auto flex flex-col items-center text-center gap-4 mb-4">
 
@@ -185,7 +199,7 @@ export function App() {
         </DefaultLayout>
       </div>
 
-      <div id="vantagens" className="text-[#3F3F3F]">
+      <div id="vantagens" className="scroll-mt-24 text-[#3F3F3F]">
         <DefaultLayout>
           <div className="mt-16">
             <h3 className="mb-1 text-[20px] font-semibold md:text-[26px]">
@@ -202,7 +216,7 @@ export function App() {
       </div>
 
       {/*FAQ*/}
-      <div id="duvidas" className="py-10 text-[#3F3F3F]">
+      <div id="duvidas" className="scroll-mt-24 py-10 text-[#3F3F3F]">
         <DefaultLayout>
           <h3 className="mb-1 text-[20px] font-semibold md:text-[26px] pb-6 border-b">
             Internet dedicada e LAN-to-LAN (link dedicado): Tire suas dúvidas

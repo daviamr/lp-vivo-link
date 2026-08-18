@@ -3,12 +3,14 @@ import DefaultLayout from "../default-layout/DefaultLayout";
 import { useNavigate } from "react-router-dom";
 import { getPartnerHashFromUrl } from "@/lib/partner-hash";
 import { usePartner } from "@/hooks/use-partner-id";
+import { formatCnpj } from "@/lib/cnpj";
 
 export function Footer({ setIsTalkToUsOpen }: { setIsTalkToUsOpen: (isOpen: boolean) => void }) {
   const navigate = useNavigate();
-  const { partnerId, partnerName, partnerLogoUrl } = usePartner();
+  const { partnerName, partnerLogoUrl, partnerCnpj } = usePartner();
   const partnerHash = getPartnerHashFromUrl();
   const privacyPath = partnerHash ? `/${partnerHash}/politica-de-privacidade` : "/politica-de-privacidade";
+  const formattedCnpj = partnerCnpj ? formatCnpj(partnerCnpj) : null;
 
   return (
     <footer className="bg-white">
@@ -39,11 +41,13 @@ export function Footer({ setIsTalkToUsOpen }: { setIsTalkToUsOpen: (isOpen: bool
             )}
           </div>
 
-          <p className="text-xs text-center max-w-120 text-[#747474]">
-            {partnerId != null && "Gold Empresas - Parceiro Vivo Empresa"}<br />
-            LTL TELEFONIA E COMUNICAÇÕES LTD | 20.395.452/0001-27<br />
-            RRua Quintana, 887 | Cidade Monções | São Paulo - SP | CEP 04569-011
-          </p>
+          {(partnerName || formattedCnpj) && (
+            <p className="text-xs text-center max-w-120 text-[#747474]">
+              {partnerName && `${partnerName} - Parceiro Vivo Empresa`}
+              {partnerName && formattedCnpj && <br />}
+              {formattedCnpj}
+            </p>
+          )}
         </div>
       </DefaultLayout>
     </footer>

@@ -212,6 +212,10 @@ export type CreateOrderPayload = {
 
 export type UpdateOrderPayload = Partial<{
   support: "whatsapp" | "ligacao"
+  partner_id: number | null
+  business_partner: string
+  category: string
+  landing_page: string
   plan: OrderPlanPayload
   selected_extras: OrderExtra[]
   price_summary: OrderPriceSummary

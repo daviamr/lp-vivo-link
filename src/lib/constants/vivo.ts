@@ -4,4 +4,4 @@ export const VIVO_CATEGORY = "link-dedicado"
 export const VIVO_LANDING_PAGE = "link-dedicado"
 export const VIVO_JOURNEY = ["vivo"] as const
 export const VIVO_CLIENT_TYPE = "PJ" as const
-export const HERO_PLAN_ID = 134
+export const HERO_PLAN_ID = 168

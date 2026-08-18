@@ -305,8 +305,8 @@ export default function CheckoutFourthStep() {
   const secondCard = () => {
     return (
       <div className="text-[#3F3F3F] mt-12">
-        <h1>{secondTitle}</h1>
-        <p className="text-[20px] font-bold">{secondDescription}</p>
+        <h1 className="text-lg leading-snug break-words md:text-2xl">{secondTitle}</h1>
+        <p className="text-base font-bold md:text-[20px]">{secondDescription}</p>
 
         <div className="grid gap-4 mt-7 text-[#3F3F3F] md:grid-cols-6 md:gap-x-6 md:gap-y-3">
           {installationOptions.map((option) => (

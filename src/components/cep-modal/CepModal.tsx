@@ -17,7 +17,7 @@ import { fetchAddressByCep } from "@/lib/api/viacep"
 import { saveCepAddress } from "@/lib/cep-storage"
 import { trackCepSubmitted } from "@/lib/gtm"
 import { mapCreateOrderPayload } from "@/lib/order-mappers"
-import { getOrderSession, saveOrderSession } from "@/lib/order-storage"
+import { getOrderSession, saveOrderSession, toPartnerSessionFields } from "@/lib/order-storage"
 import { getPartnerHashFromUrl } from "@/lib/partner-hash"
 import {
   cepModalSchema,
@@ -178,9 +178,7 @@ export default function CepModal() {
         orderId: response.order.id,
         orderToken: response.order_token,
         expiresAt: response.expires_at,
-        partnerId: partner?.partner_id ?? null,
-        partnerName: partner?.partner_name ?? null,
-        partnerLogoUrl: partner?.logo_url ?? null,
+        ...toPartnerSessionFields(partner),
       })
       saveCepAddress(result.data)
       trackCepSubmitted("disponivel")

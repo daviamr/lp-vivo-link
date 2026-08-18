@@ -19,6 +19,7 @@ import TermsOfUse from "./pages/TermsOfUse.tsx"
 import Edit from "./pages/Edit.tsx"
 import SuccessEdit from "./pages/SuccessEdit.tsx"
 import Resume from "./pages/Resume.tsx"
+import { usePartnerSync } from "@/hooks/use-partner-sync.ts"
 
 function AppShell() {
   const { pathname } = useLocation()
@@ -26,6 +27,8 @@ function AppShell() {
   const showFooter =
     !isCheckoutPath && pathname !== "/sucesso" && pathname !== "/editar-concluido"
   const [isTalkToUsOpen, setIsTalkToUsOpen] = useState(false)
+
+  usePartnerSync()
 
   useEffect(() => {
     void initClientSession()

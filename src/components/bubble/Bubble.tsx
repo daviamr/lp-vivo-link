@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { PhoneInput } from "../ui/phone-input/PhoneInput";
 import { Button } from "../ui/button";
 import { getOrderSession } from "@/lib/order-storage";
-import { updateOrder } from "@/lib/api/orders";
+import { tryUpdateOrder } from "@/lib/order-actions";
 import { isValidPhoneNumber, parsePhoneNumber } from "@/lib/phone";
 import {
   trackSpecialistCallSubmit,
@@ -27,12 +27,10 @@ function toTitleCase(str: string): string {
 
 type ContactFormProps = {
   option: SupportOption;
-  orderId: number;
-  orderToken: string;
   onSuccess: () => void;
 };
 
-function ContactForm({ option, orderId, orderToken, onSuccess }: ContactFormProps) {
+function ContactForm({ option, onSuccess }: ContactFormProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState(false);
@@ -58,7 +56,7 @@ function ContactForm({ option, orderId, orderToken, onSuccess }: ContactFormProp
       }
 
       const localPhone = parsePhoneNumber(phone).localNumber;
-      await updateOrder(orderId, orderToken, {
+      await tryUpdateOrder({
         support: option,
         full_name: toTitleCase(name),
         phone: localPhone,
@@ -240,8 +238,6 @@ export default function Bubble() {
             </p>
             <ContactForm
               option={selectedOption}
-              orderId={orderId}
-              orderToken={orderToken}
               onSuccess={() => {
                 trackSpecialistSuccess();
                 setShowSuccess(true);

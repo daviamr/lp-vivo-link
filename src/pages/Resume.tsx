@@ -138,6 +138,8 @@ export default function Resume() {
           partnerId: data.partial_data.partner_id,
           partnerName: data.partial_data.business_partner ?? null,
           partnerLogoUrl: null,
+          partnerHash: null,
+          partnerCnpj: null,
         })
 
         hydrateCheckout(data.partial_data)

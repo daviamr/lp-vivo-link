@@ -149,15 +149,15 @@ export default function CheckoutFirstStep() {
 
   return (
     <div className="text-[#3F3F3F]">
-      <p className="text-[20px] font-bold">{description}</p>
-      <h1>{title}</h1>
+      <p className="text-base font-bold md:text-[20px]">{description}</p>
+      <h1 className="text-lg leading-snug break-words md:text-2xl">{title}</h1>
 
       <form
-        className="grid gap-4 text-[#3F3F3F] md:grid-cols-2 md:gap-x-6 md:gap-y-2"
+        className="grid grid-cols-1 gap-4 text-[#3F3F3F] md:grid-cols-2 md:gap-x-6 md:gap-y-2"
         onSubmit={handleSubmit}
         noValidate>
-        <p className="col-span-2 text-[20px] font-bold my-4">Dados do Gestor</p>
-        {/* <div className="col-span-2 md:col-span-1">
+        <p className="col-span-full text-[20px] font-bold my-4">Dados do Gestor</p>
+        {/* <div className="col-span-full md:col-span-1">
           <Label htmlFor="cpf" className="text-[16px] mb-2">CPF</Label>
           <Input
             type="text"
@@ -174,7 +174,7 @@ export default function CheckoutFirstStep() {
           )}
         </div>  <!-- Comentado, reverter caso necessário --> */}
 
-        <div className="col-span-2">
+        <div className="col-span-full">
           <Label htmlFor="fullName" className="text-[16px] mb-2">Nome Completo</Label>
           <Input
             type="text"
@@ -189,7 +189,7 @@ export default function CheckoutFirstStep() {
           )}
         </div>
 
-        <div className="col-span-2 md:col-span-1">
+        <div className="col-span-full md:col-span-1">
           <Label htmlFor="email" className="text-[16px] mb-2">E-mail</Label>
           <Input
             type="email"
@@ -208,7 +208,7 @@ export default function CheckoutFirstStep() {
           )}
         </div>
 
-        <div className="col-span-2 md:col-span-1">
+        <div className="col-span-full md:col-span-1">
           <Label htmlFor="tel" className="text-[16px] mb-2">Celular</Label>
           <PhoneInput
             id="tel"
@@ -224,8 +224,8 @@ export default function CheckoutFirstStep() {
           )}
         </div>
 
-        <div className="col-span-2 mb-4">
-          <Label htmlFor="legal_authorization" className="text-[16px] mt-2">
+        <div className="col-span-full mb-4">
+          <Label htmlFor="legal_authorization" className="mt-2 items-start whitespace-normal text-left text-[16px] leading-snug">
             <Checkbox
               id="legal_authorization"
               className="rounded-full"
@@ -245,8 +245,8 @@ export default function CheckoutFirstStep() {
           )}
         </div>
 
-        <p className="col-span-2 text-[20px] font-bold mb-4">Dados da Empresa</p>
-        <div className="col-span-2 md:col-span-1">
+        <p className="col-span-full text-[20px] font-bold mb-4">Dados da Empresa</p>
+        <div className="col-span-full md:col-span-1">
           <Label htmlFor="cnpj" className="text-[16px] mb-2">CNPJ</Label>
           <Input
             type="text"
@@ -261,7 +261,7 @@ export default function CheckoutFirstStep() {
           )}
         </div>
 
-        <div className="col-span-2 md:col-span-1">
+        <div className="col-span-full md:col-span-1">
           <Label htmlFor="razaosocial" className="text-[16px] mb-2">Razão Social</Label>
           <Input
             type="text"
@@ -276,7 +276,7 @@ export default function CheckoutFirstStep() {
           )}
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-full">
           <Button
             type="submit"
             disabled={isSubmitting}

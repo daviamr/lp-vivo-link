@@ -6,54 +6,41 @@ export function CheckoutProgress({ progress }: CheckoutprogresssProps) {
           (progress === 4) ? 'w-[80%]' :
             (progress === 5) ? 'w-[100%]' : 'w-0'
 
-  const liDefaultStyle = `relative flex justify-center items-center m-auto rounded-full w-9 h-9 shadow`
-  const spanDefaultStyle = `absolute text-sm`
+  const steps = [
+    { number: 1, label: "Titular" },
+    { number: 2, label: "Extras" },
+    { number: 3, label: "Instalação" },
+    { number: 4, label: "Agendamento" },
+    { number: 5, label: "Confirmação" },
+  ] as const
+
   return (
-    <div className="relative top-0 mt-9 z-10">
-      <ul className="grid grid-cols-5 text-center text-[#3F3F3F] text-[20px] font-bold mb-16">
-        <li
-          className={`${liDefaultStyle} ${(progress >= 1 ? 'bg-[#1F1D1D] text-white font-bold' : 'bg-white')}`}>
-          1
-          <span
-            className={`${spanDefaultStyle} -bottom-8 ${(progress >= 1 && 'text-[#1F1D1D] font-bold')}`}>
-            Titular
-          </span>
-        </li>
-        <li
-          className={`${liDefaultStyle} ${(progress >= 2 ? 'bg-[#1F1D1D] text-white font-bold' : 'bg-white')}`}>
-          2
-          <span
-            className={`${spanDefaultStyle} -bottom-8 ${(progress >= 2 && 'text-[#1F1D1D] font-bold')}`}>
-            Extras
-          </span>
-        </li>
-        <li
-          className={`${liDefaultStyle} ${(progress >= 3 ? 'bg-[#1F1D1D] text-white font-bold' : 'bg-white')}`}>
-          3
-          <span
-            className={`${spanDefaultStyle} -bottom-8 ${(progress >= 3 && 'text-[#1F1D1D] font-bold')}`}>
-            Instalação
-          </span>
-        </li>
-        <li
-          className={`${liDefaultStyle} ${(progress >= 4 ? 'bg-[#1F1D1D] text-white font-bold' : 'bg-white')}`}>
-          4
-          <span
-            className={`${spanDefaultStyle} -bottom-8 ${(progress >= 4 && 'text-[#1F1D1D] font-bold')}`}>
-            Agendamento
-          </span>
-        </li>
-        <li
-          className={`${liDefaultStyle} ${(progress >= 5 ? 'bg-[#1F1D1D] text-white font-bold' : 'bg-white')}`}>
-          5
-          <span
-            className={`${spanDefaultStyle} -bottom-8 ${(progress >= 5 && 'text-[#1F1D1D] font-bold')}`}>
-            Confirmação
-          </span>
-        </li>
+    <div className="relative top-0 z-10 mt-9">
+      <ul className="relative z-10 mb-4 grid grid-cols-5 text-center text-[#3F3F3F]">
+        {steps.map((item) => (
+          <li
+            key={item.number}
+            className="flex flex-col items-center gap-1.5 px-0.5"
+          >
+            <span
+              className={`flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold shadow sm:size-8 sm:text-sm md:size-9 md:text-base ${
+                progress >= item.number ? "bg-[#1F1D1D] text-white" : "bg-white"
+              }`}
+            >
+              {item.number}
+            </span>
+            <span
+              className={`w-full text-[10px] leading-tight font-bold hyphens-auto break-words md:text-sm lg:text-[20px] ${
+                progress >= item.number ? "text-[#1F1D1D]" : ""
+              }`}
+            >
+              {item.label}
+            </span>
+          </li>
+        ))}
       </ul>
-      <div className={`bg-[#1F1D1D] h-[3px] absolute top-4 duration-300 -z-5 ${conditional}`} />
-      <div className="bg-[#AAAAAA] w-full h-[3px] absolute top-4 -z-10" />
+      <div className={`absolute top-3.5 sm:top-4 h-[3px] bg-[#1F1D1D] duration-300 ${conditional}`} />
+      <div className="absolute top-3.5 sm:top-4 -z-10 h-[3px] w-full bg-[#AAAAAA]" />
     </div>
   )
 }
